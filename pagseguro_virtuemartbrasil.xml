@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension version="2.5" type="plugin" group="vmpayment" method="upgrade">    
+    <name>Pagseguro VirtueMart Brasil</name>
+    <creationDate>Fevereiro 2015</creationDate>
+    <author>Fábio Paiva/Luiz F. Weber</author>
+    <authorUrl>http://weber.eti.br - http://virtuemartbrasil.com.br</authorUrl>
+    <copyright>Copyright (C) 2015. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
+    <version>2.8</version>
+    <description>
+	Plugin de pagamento Pagseguro
+	&lt;div style=&quot;background:#E5F5FF;border:1px solid #99D6FF;padding:10px;margin:10px; -box-shadow: inset 0px 0px 10px #fff, 0px 0px 5px #ccc; -webkit-box-shadow: inset 0px 0px 10px #fff, 0px 0px 5px #ccc; -moz-box-shadow: inset 0px 0px 10px #fff, 0px 0px 5px #ccc;&quot;&gt;
+		&lt;h1&gt;Plugin de pagamento Pagseguro para Virtuemart 2.0.&lt;/h1&gt;
+		&lt;div&gt;&lt;em&gt;Passo 1&lt;/em&gt; - Habilite o plugin aqui &lt;a href=&quot;index.php?option=com_plugins&amp;view=plugins&amp;filter_search=pagseguro&quot;&gt;Administrar Plugins&lt;/a&gt;&lt;/div&gt;
+		&lt;div&gt;&lt;em&gt;Passo 2&lt;/em&gt; - Instale Plugin por esta tela &lt;a href=&quot;index.php?option=com_virtuemart&amp;view=paymentmethod&quot;&gt;Métodos de pagamento&lt;/a&gt;&lt;/div&gt;
+		&lt;div&gt;&lt;em&gt;Passo 2.1&lt;/em&gt; - &lt;b&gt;Clique em Novo Método de Pagamento&lt;/b&gt; e preencha as informações:&lt;/div&gt;
+		&lt;div&gt;* Nome do Pagamento: &lt;b&gt;Pagseguro&lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;* Publicado: &lt;b&gt;Sim&lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;* Descrição do pagamento: &lt;b&gt;Pague com Cartão de Crédito, Transferência e Boleto Via Pagseguro&lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;* Método de pagamento: &lt;b&gt;Pagseguro&lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;* Grupo de Compradores: &lt;b&gt;-default-&lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;&lt;em&gt;Passo 2.2&lt;/em&gt; - &lt;b&gt;Clique em Salvar&lt;/b&gt;.&lt;/div&gt;
+		&lt;div&gt;&lt;em&gt;Passo 3&lt;/em&gt; - Na &lt;b&gt;aba configurações&lt;/b&gt;, preencha os dados:&lt;/div&gt;
+		&lt;div&gt;* Logotipos: &lt;b&gt;&lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;* Email Pagseguro: &lt;b&gt;Email da conta no Pagseguro&lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;* Token: &lt;b&gt;Página inicial &gt; Ferramentas &gt; Preferências &gt; Retorno automatico dos dados ( https://pagseguro.uol.com.br/preferences/automaticReturn.jhtml#rmcl ) &lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;* Tipo de Frete Padrão: &lt;b&gt;( caso seja passado frete, esse parâmetro é desconsiderado)&lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;&lt;em&gt;Status de Pedidos:&lt;/em&gt;&lt;/div&gt;
+		&lt;div&gt;* Completo: &lt;b&gt;Status transação Enviada&lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;* Aprovado: &lt;b&gt;Status do Pedido quando Aprovada a transação&lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;* Em Análise: &lt;b&gt;Status do pedido em análise&lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;* Cancelado: &lt;b&gt;Status do Pedido quando Cancelada a transação&lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;* Aguardando Pagto: &lt;b&gt;Status Pendente do Pedido&lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;* Paga: &lt;b&gt;Status Pago do Valor da Transação&lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;* Disponível: &lt;b&gt;Status Disponível do Valor da Transação&lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;* Devolvida: &lt;b&gt;Status Devolvido do Valor da Transação&lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;* Em disputa: &lt;b&gt;Status em disputa do Valor da Transação&lt;/b&gt;&lt;/div&gt;
+
+	&lt;/div&gt;
+
+	
+	&lt;div&gt;
+	Desenvolvido por Luiz Weber - &lt;a href='http://weber.eti.br'&gt;Weber TI&lt;/a&gt; | &lt;a href='http://virtuemartbrasil.com.br'&gt;VirtueMart Brasil&lt;/a&gt;
+	&lt;/div&gt;
+	
+	</description>
+    <files>
+        <filename plugin="pagseguro_virtuemartbrasil">pagseguro_virtuemartbrasil.php</filename>
+        <folder>imagens</folder>
+        <folder>admin</folder>
+        <filename>logo_pagseguro2.jpg</filename>
+    </files>
+    <media folder="imagens" destination="/images/stories/virtuemart/payment/">
+        <filename>pagseguro.gif</filename>
+    </media>
+    <config>        
+        <fields name="params" addfieldpath="/plugins/vmpayment/pagseguro_virtuemartbrasil/admin/elements/">
+            <fieldset name="basic">               
+      
+            	<field type="vmtitle" default="PagSeguro VirtueMart Brasil" description=""/>
+
+                <field type="vmjpluginwarning" />
+                <field name="payment_logos" type="vmfiles" directory="/images/stories/virtuemart/payment"
+                       hide_none="1" label="VMPAYMENT_STANDARD_LOGOS"
+                       size="40"
+                       description="VMPAYMENT_STANDARD_LOGOS_TIP"/>
+
+		        <field name="email_cobranca" type="text" size="20"  label="Email pagseguro" description="Email usado para efetuar login no Pagseguro" />        
+		        <field type="spacer" default="&lt;b&gt;Configurações de retorno do Pagseguro&lt;/b&gt;: Não se esqueça de apontar a URL de retorno nas configurações do Pagseguro para: &lt;br/&gt; &lt;em&gt;http://seusite/index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginnotification&lt;/em&gt;" label="Retorno" />
+		        <field name="token" type="text"  label="Token" description="Token gerado para sua conta no pagseguro" size="60" />
+		        <field name="tipo_frete" type="list" default="3" description="Este campo será usado somente se tiver com a configuração de frete para não pegar o frete da loja" label="Tipo de frete padrão">
+		            <option value="1">Encomenda PAC</option>
+		            <option value="2">Sedex</option>
+		            <option value="3">Frete custom</option>
+		        </field>
+		        <field name="segundos_redirecionar" type="text"  label="Segundos para Redirecionar Automaticamente" description="Segundos para Redirecionar automaticamente para o pagamento" size="2" default="5" />		
+				
+				<field type="vmspacer" default="Configuração Campos extras" />
+		        <field name="campo_numero" type="vmfield" size="30"  label="Campo Número ( do endereço )" description="Nome do campo Número do Endereço do usuário" default="numero"/>
+		        <field name="campo_complemento" type="vmfield" size="30"  label="Campo Complemento ( do endereço )" description="Nome do campo Complemento do Endereço do usuário" default="complemento"/>
+
+		        <field type="vmspacer" default="Status postado pelo Pagseguro" />
+		        <field name="status_completo" type="vmorderstate" default="S"  label="Completo" description="Status completo dentro do seu Virtuemart" /><!-- verificar se este status realmente existe -->
+		        <field name="status_aprovado" type="vmorderstate" default="C" label="Aprovado" description="Status aprovado dentro do seu Virtuemart" /><!-- verificar se este status realmente existe -->
+		        <field name="status_analise" type="vmorderstate" default="E"  label="Em Análise" description="Status Em Análise dentro do seu Virtuemart" />
+		        <field name="status_cancelado" type="vmorderstate" default="X" label="Cancelado" description="Status Cancelado dentro do seu Virtuemart" />
+		        <field name="status_aguardando" type="vmorderstate" default="A" label="Aguardando Pagto" description="Status Aguardando Pagto dentro do seu Virtuemart" />
+		        <field name="status_paga" type="vmorderstate" default="C" label="Paga" description="Status Paga dentro do seu Virtuemart" />
+		        <field name="status_disponivel" type="vmorderstate" default="S" label="Disponível" description="Status Disponível dentro do seu Virtuemart" />
+		        <field name="status_devolvida" type="vmorderstate" default="R" label="Devolvida" description="Status Devolvida dentro do seu Virtuemart" />
+		        <field name="status_disputa" type="vmorderstate" default="D" label="Em disputa" description="Status Devolvida dentro do seu Virtuemart" />
+		        
+				<field type="vmspacer" default="Extras" />		
+				<field name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="Países" description="Países para validar este pagamento"/>
+				<field name="min_amount" type="text"  label="Mínimo da Compra" description="Valor mínimo da compra" />
+				<field name="max_amount" type="text"  label="Máximo da Compra" description="Valor Máximo da compra" />
+				<field name="cost_per_transaction" type="text"  label="Custo por Transação" description="Custo total por transação" />
+				<field name="cost_percent_total" type="text"  label="Custo percentual total" description="Custo percentual total pela venda" />
+				<field name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="Tarifa/Imposto" description="Imposto ou tarifa aplicada" />
+				
+				<field name="modo_calculo_desconto" type="list" default="1" label="Modo de cálculo de descontos/tarifas">
+		            <option value="1">Modo Simples ( desconto normal )</option>
+		            <option value="2">Modo VirtueMart ( desconto progressivo )</option>
+		        </field>
+
+                <field type="vmabout" path="plugins/vmpayment/pagseguro_virtuemartbrasil/" />
+				<field type="spacer" default="&lt;br/&gt;&lt;a target='_blank' href='https://pagseguro.uol.com.br/security/webpagamentos/webdoacao.aspx?email_cobranca=fabio@paiva.info&amp;moeda=BRL'&gt;&lt;img src='https://pagseguro.uol.com.br/Security/Imagens/FacaSuaDoacao.gif' /&gt;&lt;/a&gt;&lt;hr/&gt;Licença: &lt;a href='http://www.gnu.org/licenses/gpl-3.0.html'&gt;GNU/GPL v3&lt;/a&gt; - Desenvolvido por Fábio Paiva - &lt;a href='http://paiva.info'&gt;Paiva Info&lt;/a&gt; | Luiz Weber - &lt;a href='http://weber.eti.br'&gt;Weber TI&lt;/a&gt; | &lt;a href='http://webgenium.com.br'&gt;Webgenium System&lt;/a&gt;" />
+            </fieldset>
+        </fields>
+    </config>    
+</extension>

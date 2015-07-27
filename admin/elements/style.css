@@ -1,0 +1,101 @@
+/**
+* Admin CSS file
+* @package News Show Pro GK4
+* @Copyright (C) 2009-2011 Gavick.com
+* @ All rights reserved
+* @ Joomla! is Free Software
+* @ Released under GNU/GPL License : http://www.gnu.org/copyleft/gpl.html
+* @version $Revision: GK4 1.0 $
+**/
+
+::-moz-selection { background: #d75307; color: #fff }
+::selection { background: #d75307; color: #fff }
+#jform_params_about_us-lbl,
+#jform_params___field1-lbl,
+label[id^=jform_params_gk_line_] { display: none; }
+#jform_params_news_since_img { margin-top: 8px; }
+.switcher-on,
+.switcher-off { width:94px; height:27px; background:transparent url('switcher.png') no-repeat 0 0; cursor:pointer; float: left; margin-top: 3px; }
+.switcher-off { background-position:-94px 0; }
+span.unit { line-height:34px; }
+span.readonly { padding: 20px; font-family: Arial; font-size:13px !important; font-weight: normal !important; text-align: justify; color: #4d4d4d; line-height: 24px; }
+span.readonly h1 { clear:both; font-family: Georgia, sans-serif; font-size:38px; margin:30px 20px 23px; padding:0px 0px 24px 10px; color:#333; border-bottom: 1px solid #eee; font-weight: normal; }
+span.readonly p { margin: 0 26px 10px }
+span.readonly p a { color: #AB3F0A }
+span.readonly p.homepage {margin-top: 30px}
+span.readonly p.license { border-top: 1px solid #eee; font-size: 11px; margin: 30px 26px 0; padding: 6px 0;  }
+/* lines */
+.gkFormLine { background:#eee; clear:both; display:block; height:5px; margin: 0 -10px!important; }
+.gkFormLine.hasText{ border-top: 10px solid #fff; border-bottom: 5px solid #fff; color: #999; font-size: 10px; line-height:1px; padding-left: 25px; cursor: pointer; }
+.gkFormLine.hasText span{ padding: 3px; background: #fff; }
+/* togglers */
+.pane-sliders .panel { border: none !important; }
+div.panel > h3 { height: 43px; background: transparent url('interface.png') repeat-x 0 0 !important; border: 1px solid #d8d8d8; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; font: bold 12px/43px Arial, Helvetica, sans-serif; text-transform: uppercase; }
+div.panel > h3 a { color: #333; text-shadow: 0 1px 1px #fff; }
+div.panel > h3 a:hover,
+div.panel h3.pane-toggler-down a { color: #ab3f0a }
+div.panel h3.pane-toggler-down { border-bottom: 4px solid #d75307 !important }
+.pane-toggler span { background: transparent url('j_arrow.png') no-repeat 5px 50% !important; }
+.pane-toggler-down span { background: transparent url('j_arrow_down.png') no-repeat 5px 50% !important; }
+.pane-sliders .content { margin: 4px auto; width: 99%; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
+.gkHelpLink { float: right !important; width: 22px; height: 22px; cursor: pointer; margin: 11px 12px 0 10px; background: transparent url('interface.png') repeat-x 0 100%; }
+.gkHelpLink:hover { background-position: 0 -48px; }
+/* form elements in the container */
+#jform_params_k2_tags {height: 150px}
+.panel fieldset.panelform > ul > li > label { color: #444; font-size: 11px; font-weight: bold; height: 24px; line-height: 24px; padding: 0 20px 0 10px; text-align: right; max-width: 30%!important; min-width: 30%!important; }
+.panel fieldset.panelform > ul > li fieldset { line-height:28px; }
+fieldset.panelform input[type=radio] { margin-top: 11px; }
+fieldset.panelform input { height: 16px; color: #555; line-height: 16px; padding: 4px; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; }
+fieldset.panelform input.small { width: 40px; }
+fieldset.panelform input.tright { text-align: right; }
+fieldset.panelform input[type=button] { height: 26px; line-height: 26px; }
+fieldset.panelform select { height: 26px; color: #555; line-height: 24px; padding: 4px; font-size:11px; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; }
+fieldset.panelform select.position { width: 80px!important; }
+fieldset.panelform textarea { padding: 4px; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; }
+fieldset.panelform select[multiple=multiple] { height: 150px; }
+/* lists */
+#tools_for_pages_input,
+#google_analytics_input,
+#menu_override_input,
+#suffix_override_input,
+#suffix_override_select,
+#layout_override_input { width: 80px; }
+.fltrt ul.adminformlist li { overflow: hidden; border-bottom: 1px solid #eee; padding: 1px 10px; margin: 0; }
+.tools_for_pages_remove_rule,
+.google_analytics_remove_rule,
+.menu_override_remove_rule,
+.suffix_override_remove_rule,
+.module_override_remove_rule,
+.layout_override_remove_rule { float: right; }
+fieldset.panelform .label { font-size: 11px; font-weight: bold; width: auto; padding: 0 5px; line-height:34px; }
+fieldset.panelform .desc { font-size: 11px; font-weight: normal; width: auto; padding: 10px; }
+/* Updates */
+#gk_module_updates { margin: 20px -10px 0; border-right: 1px solid #eee }
+#gk_module_updates li { margin: 0; padding: 0; border: none; line-height: 34px; color: #555; border-top: 1px solid #eee }
+#gk_module_updates li span strong { padding: 0 12px 0 0 }
+#gk_module_updates li span { display: block; float: left; height: 34px; line-height: 34px; padding: 0 0 0 20px; border-left: 1px solid #eee }
+span.gk_update_version { width: 110px; background: #fff9f6; }
+span.gk_update_data { width: 150px; background: #f9f9f9; }
+span.gk_update_link a { padding: 4px 12px; -moz-border-radius: 26px; background: #d75307; text-transform: uppercase; font: bold 10px Arial, Helvetica, sans-serif; color: #fff; line-height: 34px; }
+span.gk_update_link a:hover { background: #222; text-decoration: none; }
+#gk_module_updates p { color: #555 }
+/* 1.7 new CSS rules */
+#simple_crop { width: 321px; float: left}
+#simple_crop_top_wrap,
+#simple_crop_bottom_wrap,
+#simple_crop_left_wrap,
+#simple_crop_right_wrap { width: 46px; line-height: 36px }
+#simple_crop_top_wrap,
+#simple_crop_bottom_wrap { margin: 0 auto; }
+#simple_crop_left_wrap,
+#simple_crop_right_wrap { float: left; margin-top: 90px; }
+#simple_crop_left_wrap { margin-right: 10px; }
+#simple_crop_right_wrap { margin-left: 10px; }
+#simple_crop_top,
+#simple_crop_bottom,
+#simple_crop_left,
+#simple_crop_right { font-size: 12px; width: 24px; margin-right:2px;}
+#simple_crop_main_wrap { clear: both; overflow: hidden; }
+#simple_crop_bg { width: 202px; height: 202px; border: 3px solid #eee; background: url('cropbg.jpg') no-repeat; float:left; }
+#simple_crop_crop { width: 200px; height: 200px; border: 1px solid #ddd; background: #fff; opacity: 0.5; filter:alpha(opacity=50); }
+#paramscrop_rules { width: 90%; height: 120px; }
