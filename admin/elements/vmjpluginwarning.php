@@ -33,7 +33,7 @@ class JFormFieldVmjpluginwarning extends JFormField {
 	    $lang = JFactory::getLanguage();
 	    $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
 
-	$option = vRequest::getWord('option');
+	$option = JRequest::getWord('option');
 	if ($option == 'com_virtuemart')
 	    return null;
 	else
