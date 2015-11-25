@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension version="2.5" type="plugin" group="vmpayment" method="upgrade">    
     <name>Pagseguro VirtueMart Brasil</name>
-    <creationDate>Fevereiro 2015</creationDate>
+    <creationDate>Novembro 2015</creationDate>
     <author>Fábio Paiva/Luiz F. Weber</author>
     <authorUrl>http://weber.eti.br - http://virtuemartbrasil.com.br</authorUrl>
     <copyright>Copyright (C) 2015. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-    <version>2.8</version>
+    <version>2.9</version>
     <description>
 	Plugin de pagamento Pagseguro
 	&lt;div style=&quot;background:#E5F5FF;border:1px solid #99D6FF;padding:10px;margin:10px; -box-shadow: inset 0px 0px 10px #fff, 0px 0px 5px #ccc; -webkit-box-shadow: inset 0px 0px 10px #fff, 0px 0px 5px #ccc; -moz-box-shadow: inset 0px 0px 10px #fff, 0px 0px 5px #ccc;&quot;&gt;
@@ -23,7 +23,7 @@
 		&lt;div&gt;&lt;em&gt;Passo 3&lt;/em&gt; - Na &lt;b&gt;aba configurações&lt;/b&gt;, preencha os dados:&lt;/div&gt;
 		&lt;div&gt;* Logotipos: &lt;b&gt;&lt;/b&gt;&lt;/div&gt;
 		&lt;div&gt;* Email Pagseguro: &lt;b&gt;Email da conta no Pagseguro&lt;/b&gt;&lt;/div&gt;
-		&lt;div&gt;* Token: &lt;b&gt;Página inicial &gt; Ferramentas &gt; Preferências &gt; Retorno automatico dos dados ( https://pagseguro.uol.com.br/preferences/automaticReturn.jhtml#rmcl ) &lt;/b&gt;&lt;/div&gt;
+		&lt;div&gt;* Token: &lt;b&gt;Gerar o token no painel do Pagseguro&lt;/b&gt; &lt;/div&gt;
 		&lt;div&gt;* Tipo de Frete Padrão: &lt;b&gt;( caso seja passado frete, esse parâmetro é desconsiderado)&lt;/b&gt;&lt;/div&gt;
 		&lt;div&gt;&lt;em&gt;Status de Pedidos:&lt;/em&gt;&lt;/div&gt;
 		&lt;div&gt;* Completo: &lt;b&gt;Status transação Enviada&lt;/b&gt;&lt;/div&gt;
@@ -48,6 +48,7 @@
         <filename plugin="pagseguro_virtuemartbrasil">pagseguro_virtuemartbrasil.php</filename>
         <folder>imagens</folder>
         <folder>admin</folder>
+        <folder>PagSeguroLibrary</folder>
         <filename>logo_pagseguro2.jpg</filename>
     </files>
     <media folder="imagens" destination="/images/stories/virtuemart/payment/">
@@ -66,7 +67,7 @@
                        description="VMPAYMENT_STANDARD_LOGOS_TIP"/>
 
 		        <field name="email_cobranca" type="text" size="20"  label="Email pagseguro" description="Email usado para efetuar login no Pagseguro" />        
-		        <field type="spacer" default="&lt;b&gt;Configurações de retorno do Pagseguro&lt;/b&gt;: Não se esqueça de apontar a URL de retorno nas configurações do Pagseguro para: &lt;br/&gt; &lt;em&gt;http://seusite/index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginnotification&lt;/em&gt;" label="Retorno" />
+		        <field type="spacer" default="&lt;b&gt;Configurações de retorno do Pagseguro&lt;/b&gt;: Não se esqueça de apontar a URL de notificação nas configurações do Pagseguro para: &lt;br/&gt; &lt;em&gt;http://seusite/index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginnotification&lt;/em&gt;" label="Retorno" />
 		        <field name="token" type="text"  label="Token" description="Token gerado para sua conta no pagseguro" size="60" />
 		        <field name="tipo_frete" type="list" default="3" description="Este campo será usado somente se tiver com a configuração de frete para não pegar o frete da loja" label="Tipo de frete padrão">
 		            <option value="1">Encomenda PAC</option>

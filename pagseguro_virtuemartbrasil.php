@@ -29,6 +29,10 @@ if (!class_exists('vmPSPlugin'))
 if (!class_exists('shopFunctions'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 
+if (!class_exists('PagSeguroLibrary')) {
+    require('PagSeguroLibrary/PagSeguroLibrary.php');
+}
+
 class plgVmPaymentPagseguro_virtuemartbrasil extends vmPSPlugin {
 
     // instance of class
@@ -623,105 +627,95 @@ class plgVmPaymentPagseguro_virtuemartbrasil extends vmPSPlugin {
       */
       function plgVmOnPaymentNotification() {
         
-        header("Status: 200 OK");
+         header("Status: 200 OK");
         if (!class_exists('VirtueMartModelOrders'))
             require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
         $pagseguro_data = $_REQUEST;
         
         if (!isset($pagseguro_data['TransacaoID'])) {
             return;
-        }       
-        $order_number = $pagseguro_data['Referencia'];
+        }     
+
+        $this->logInfo('pagseguro_data ' . implode('   ', $pagseguro_data), 'message');
+
+        // dados do pagseguro
+        $email_cobranca = $method->email_cobranca;
+        $token          = $method->token;
+
+        $credentials = new PagSeguroAccountCredentials($merchant_email, $pagseguro_token);
+
+        $type = $pagseguro_data['notificationType'];
+        $code = $pagseguro_data['notificationCode'];
+
+        if ($type === 'transaction') {
+            $transaction = PagSeguroNotificationService::checkTransaction($credentials, $code);
+        } else {
+            return false;
+        }
+
+        // dados do pedido
+        $referencia = $transaction->getReference();
+        $PSdataRef = explode('|||', $referencia);
+        $order_number = $PSdataRef[0];
+        $return_context = $PSdataRef[1];
         $virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
-        //$this->logInfo('plgVmOnPaymentNotification: virtuemart_order_id  found ' . $virtuemart_order_id, 'message');
 
         if (!$virtuemart_order_id) {
             return;
         }
         $vendorId = 0;
         $payment = $this->getDataByOrderId($virtuemart_order_id);
-        if($payment->payment_name == '') {
-            return false;
-        }
-        $method = $this->getVmPluginMethod($payment->virtuemart_paymentmethod_id);
-        if (!$this->selectedThisElement($method->payment_element)) {
-            return false;
-        }
-        //$this->_debug = $method->debug;
         if (!$payment) {
             $this->logInfo('getDataByOrderId payment not found: exit ', 'ERROR');
             return null;
         }
-        $this->logInfo('pagseguro_data ' . implode('   ', $pagseguro_data), 'message');
 
-        // get all know columns of the table
-        $db = JFactory::getDBO();
-        $query = 'SHOW COLUMNS FROM `' . $this->_tablename . '` ';
-        $db->setQuery($query);
-        $columns = $db->loadResultArray(0);
-        $post_msg = '';
-        foreach ($pagseguro_data as $key => $value) {
-            $post_msg .= $key . "=" . $value . "<br />";
-            $table_key = 'pagseguro_response_' . $key;
-            if (in_array($table_key, $columns)) {
-            $response_fields[$table_key] = $value;
-            }
+        $method = $this->getVmPluginMethod($payment->virtuemart_paymentmethod_id);
+        if (!$this->selectedThisElement($method->payment_element)) {
+            return false;
         }
 
-        //$response_fields[$this->_tablepkey] = $this->_getTablepkeyValue($virtuemart_order_id);
-        //$response_fields['payment_name'] = $this->renderPluginName($method);
-        //$response_fields['paypalresponse_raw'] = $post_msg;
-        //$return_context = $pagseguro_data['custom'];
+        $this->_debug = $method->debug;
+        $this->logInfo('Notification: pagseguro_data ' . implode(' | ', $pagseguro_data), 'message');
 
-        $response_fields['payment_name'] = $payment->payment_name;
-        $response_fields['order_number'] = $order_number;
-        $response_fields['virtuemart_order_id'] = $virtuemart_order_id;
+        $this->_storePagseguroInternalData($method, $transaction, $virtuemart_order_id);
 
-        //$preload=true   preload the data here too preserve not updated data
-        //$this->storePSPluginInternalData($response_fields, 'virtuemart_order_id', true);
+        $ps_status = $transaction->getStatus();
+        $payment_status = $ps_status->getValue();
 
-        /*
-        $error_msg = $this->_processIPN($pagseguro_data, $method);
-        $this->logInfo('process IPN ' . $error_msg, 'message');     
-        if (!(empty($error_msg) )) {
-            $new_status = $method->status_canceled;
-            $this->logInfo('process IPN ' . $error_msg . ' ' . $new_status, 'ERROR');
-        } else {
-            $this->logInfo('process IPN OK', 'message');
-        }*/
-            /*
-             * https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_IPNandPDTVariables
-             * The status of the payment:
-             * Canceled_Reversal: A reversal has been canceled. For example, you won a dispute with the customer, and the funds for the transaction that was reversed have been returned to you.
-             * Completed: The payment has been completed, and the funds have been added successfully to your account balance.
-             * Created: A German ELV payment is made using Express Checkout.
-             * Denied: You denied the payment. This happens only if the payment was previously pending because of possible reasons described for the pending_reason variable or the Fraud_Management_Filters_x variable.
-             * Expired: This authorization has expired and cannot be captured.
-             * Failed: The payment has failed. This happens only if the payment was made from your customer�s bank account.
-             * Pending: The payment is pending. See pending_reason for more information.
-             * Refunded: You refunded the payment.
-             * Reversed: A payment was reversed due to a chargeback or other type of reversal. The funds have been removed from your account balance and returned to the buyer. The reason for the reversal is specified in the ReasonCode element.
-             * Processed: A payment has been accepted.
-             * Voided: This authorization has been voided.
-             *
-             */
-            if (empty($pagseguro_data['cod_status']) || ($pagseguro_data['cod_status'] != '0' && $pagseguro_data['cod_status'] != '1' && $pagseguro_data['cod_status'] != '2')) {
-            //return false;
-            }
-            
-            $pagseguro_status = $pagseguro_data['StatusTransacao'];
-            switch($pagseguro_status){
-                case 'Completo':    $new_status = $method->status_completo; break;
-                case 'Aprovado':    $new_status = $method->status_aprovado; break;
-                case 'Em Análise':  $new_status = $method->status_analise; break;
-                case 'Cancelado':   $new_status = $method->status_cancelado; break;
-                case 'Paga':        $new_status = $method->status_paga; break;
-                case 'Disponivel':  $new_status = $method->status_disponivel; break;
-                case 'Devolvida':   $new_status = $method->status_devolvida; break;
-                case 'Aguardando Pagto':
-                default: $new_status = $method->status_aguardando; break;
-            }
-
+        $order = array();
+        $new_status = '';
+        if ($payment_status == 1 || $payment_status == 2) {
+            $new_status = $method->status_aguardando;
+            $order['order_status'] = $new_status;
+            $order['customer_notified'] = 0;
+            $order['comments'] = 'O status do seu pedido '.$order_number.' no Pagseguro foi atualizado: Aguardando pagamento';
+        } elseif ($payment_status == 3) {
+            $new_status = $method->status_aprovado;
+            $order['order_status'] = $new_status;
+            $order['customer_notified'] =1;
+            $order['comments'] = 'O status do seu pedido '.$order_number.' no Pagseguro foi atualizado: Pago';
+        } elseif ($payment_status == 4) {
+            $new_status = $method->status_disponivel;
+            $order['order_status'] = $new_status;
+            $order['customer_notified'] =0;
+            $order['comments'] = 'O status do seu pedido '.$order_number.' no Pagseguro foi atualizado: Completo';
+        } elseif ($payment_status == 5) {
+            $new_status = $method->status_analise;
+            $order['order_status'] = $new_status;
+            $order['customer_notified'] =0;
+            $order['comments'] = 'O status do seu pedido '.$order_number.' no Pagseguro foi atualizado: Disputa';
+        } elseif ($payment_status == 6) {
+            $new_status = $method->status_devolvida;
+            $order['order_status'] = $new_status;
+            $order['customer_notified'] =0;
+            $order['comments'] = 'O status do seu pedido '.$order_number.' no Pagseguro foi atualizado: Devolvida';
+        } elseif ($payment_status == 7) {
+            $new_status = $method->status_cancelado;
+            $order['order_status'] = $new_status;
+            $order['customer_notified'] =1;
+            $order['comments'] = 'O status do seu pedido '.$order_number.' no Pagseguro foi atualizado: Cancelada';
+        }
 
         $this->logInfo('plgVmOnPaymentNotification return new_status:' . $new_status, 'message');
 
@@ -732,23 +726,16 @@ class plgVmPaymentPagseguro_virtuemartbrasil extends vmPSPlugin {
             $modelOrder = new VirtueMartModelOrders();
             $orderitems = $modelOrder->getOrder($virtuemart_order_id);
             $nb_history = count($orderitems['history']);
-            $order['order_status'] = $new_status;
-            $order['virtuemart_order_id'] = $virtuemart_order_id;
-            $order['comments'] = 'O status do seu pedido '.$order_number.' no Pagseguro foi atualizado: '.utf8_encode($pagseguro_data['StatusTransacao']);
-            if ($nb_history == 1) {
-                $order['comments'] .= "<br />" . JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
-                $order['customer_notified'] = 0;
-            } else {
-                $order['customer_notified'] = 1;
-            }
+
             $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
             if ($nb_history == 1) {
-            if (!class_exists('shopFunctionsF'))
-                require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-            shopFunctionsF::sentOrderConfirmedEmail($orderitems);
-            $this->logInfo('Notification, sentOrderConfirmedEmail ' . $order_number. ' '. $new_status, 'message');
+                if (!class_exists('shopFunctionsF'))
+                    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+                shopFunctionsF::sentOrderConfirmedEmail($orderitems);
+                $this->logInfo('Notification, sentOrderConfirmedEmail ' . $order_number. ' '. $new_status, 'message');
             }
         }
+
         //// remove vmcart
         $this->emptyCart($return_context);
     }
