@@ -631,15 +631,25 @@ class plgVmPaymentPagseguro_virtuemartbrasil extends vmPSPlugin {
         if (!class_exists('VirtueMartModelOrders'))
             require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
         $pagseguro_data = $_REQUEST;
-      
 
         $this->logInfo('pagseguro_data ' . implode('   ', $pagseguro_data), 'message');
 
-        // dados do pagseguro
-        $email_cobranca = $method->email_cobranca;
-        $token          = $method->token;
+        $qps = 'SELECT `virtuemart_paymentmethod_id` FROM `#__virtuemart_paymentmethods` WHERE `payment_element`="pagseguro" ';
+        $dbps = &JFactory::getDBO();
+        $dbps->setQuery($qps);
+        $psmethod_id = $dbps->loadResult();
+                
+        $psmethod = $this->getVmPluginMethod($psmethod_id);
+        if (!$this->selectedThisElement($psmethod->payment_element)) {
+            return false;
+        }
 
-        $credentials = new PagSeguroAccountCredentials($merchant_email, $pagseguro_token);
+        // dados do pagseguro
+        $email_cobranca = $psmethod->email_cobranca;
+        $token          = $psmethod->token;
+
+
+        $credentials = new PagSeguroAccountCredentials($email_cobranca, $token);
 
         $type = $pagseguro_data['notificationType'];
         $code = $pagseguro_data['notificationCode'];
@@ -647,7 +657,7 @@ class plgVmPaymentPagseguro_virtuemartbrasil extends vmPSPlugin {
         if ($type === 'transaction') {
             $transaction = PagSeguroNotificationService::checkTransaction($credentials, $code);
         } else {
-            return false;
+            return false;            
         }
 
         // dados do pedido
@@ -672,10 +682,7 @@ class plgVmPaymentPagseguro_virtuemartbrasil extends vmPSPlugin {
             return false;
         }
 
-        $this->_debug = $method->debug;
         $this->logInfo('Notification: pagseguro_data ' . implode(' | ', $pagseguro_data), 'message');
-
-        $this->_storePagseguroInternalData($method, $transaction, $virtuemart_order_id);
 
         $ps_status = $transaction->getStatus();
         $payment_status = $ps_status->getValue();
@@ -686,33 +693,47 @@ class plgVmPaymentPagseguro_virtuemartbrasil extends vmPSPlugin {
             $new_status = $method->status_aguardando;
             $order['order_status'] = $new_status;
             $order['customer_notified'] = 0;
-            $order['comments'] = 'O status do seu pedido '.$order_number.' no Pagseguro foi atualizado: Aguardando pagamento';
+            $desc_status = "Aguardando pagamento";
         } elseif ($payment_status == 3) {
             $new_status = $method->status_aprovado;
             $order['order_status'] = $new_status;
             $order['customer_notified'] =1;
-            $order['comments'] = 'O status do seu pedido '.$order_number.' no Pagseguro foi atualizado: Pago';
+            $desc_status = "Pago";
         } elseif ($payment_status == 4) {
             $new_status = $method->status_disponivel;
             $order['order_status'] = $new_status;
             $order['customer_notified'] =0;
-            $order['comments'] = 'O status do seu pedido '.$order_number.' no Pagseguro foi atualizado: Completo';
+            $desc_status = "Completo";
         } elseif ($payment_status == 5) {
             $new_status = $method->status_analise;
             $order['order_status'] = $new_status;
             $order['customer_notified'] =0;
-            $order['comments'] = 'O status do seu pedido '.$order_number.' no Pagseguro foi atualizado: Disputa';
+            $desc_status = "Disputa";
         } elseif ($payment_status == 6) {
             $new_status = $method->status_devolvida;
             $order['order_status'] = $new_status;
             $order['customer_notified'] =0;
-            $order['comments'] = 'O status do seu pedido '.$order_number.' no Pagseguro foi atualizado: Devolvida';
+            $desc_status = "Devolvida";
         } elseif ($payment_status == 7) {
             $new_status = $method->status_cancelado;
             $order['order_status'] = $new_status;
             $order['customer_notified'] =1;
-            $order['comments'] = 'O status do seu pedido '.$order_number.' no Pagseguro foi atualizado: Cancelada';
+            $desc_status = "Cancelada";
         }
+
+        $order['comments'] = 'O status do seu pedido '.$order_number.' no Pagseguro foi atualizado: '.$desc_status;
+
+
+        $this->_virtuemart_paymentmethod_id = $order['details']['BT']->virtuemart_paymentmethod_id;
+        $dbValues['payment_name'] = $this->renderPluginName($method);
+        $dbValues['order_number'] = $order['details']['BT']->order_number;
+        $dbValues['virtuemart_paymentmethod_id'] = $this->_virtuemart_paymentmethod_id;
+        $dbValues['cost_per_transaction'] = (!empty($method->cost_per_transaction)?$method->cost_per_transaction:0);
+        $dbValues['cost_percent_total'] = (!empty($method->cost_percent_total)?$method->cost_percent_total:0);
+        $dbValues['payment_currency'] = $currency_code_3;
+        $dbValues['payment_order_total'] = $totalInPaymentCurrency;
+        $dbValues['tax_id'] = $method->tax_id;
+        $this->storePSPluginInternalData($dbValues);
 
         $this->logInfo('plgVmOnPaymentNotification return new_status:' . $new_status, 'message');
 
@@ -735,6 +756,7 @@ class plgVmPaymentPagseguro_virtuemartbrasil extends vmPSPlugin {
 
         //// remove vmcart
         $this->emptyCart($return_context);
+
     }
 
       /**
