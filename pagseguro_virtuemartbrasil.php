@@ -143,7 +143,7 @@ class plgVmPaymentPagseguro_virtuemartbrasil extends vmPSPlugin {
         $html = $this->retornaHtmlPagamento( $order, $method, 1);
         
         JFactory::getApplication()->enqueueMessage(utf8_encode(
-            "Seu pedido foi realizado com sucesso. Você será direcionado para o site do Pagseguro, onde efetuará o pagamento da sua compra."
+            "Seu pedido foi realizado com sucesso. voc&ecirc; ser&aacute; direcionado para o site do Pagseguro, onde efetuar&aacute o pagamento da sua compra."
         ));
 
         $novo_status = $method->status_aguardando;
@@ -183,22 +183,7 @@ class plgVmPaymentPagseguro_virtuemartbrasil extends vmPSPlugin {
         $html .= $this->getHtmlRow('STANDARD_ORDER_NUMBER', $order['details']['BT']->order_number);
         $html .= $this->getHtmlRow('STANDARD_AMOUNT', $currency->priceDisplay($order['details']['BT']->order_total));
         $html .= '</table>' . "\n";
-        
-        //buscar forma de envio
-        /*
-        $db = &JFactory::getDBO();
-        $q = 'SELECT `shipment_element` FROM `#__virtuemart_shipmentmethods` WHERE `virtuemart_shipmentmethod_id`="' . $order["details"][$endereco]->virtuemart_shipmentmethod_id . '" ';
-        $db->setQuery($q);
-        $envio = $db->loadResult();
 
-        if (stripos($envio, "sedex") === false && stripos($envio, "pac") === false) {
-            $tipo_frete = $method->tipo_frete ? 'SD' : 'EN'; // Encomenda Pac ou Sedex
-        } elseif (stripos($envio, "sedex") !== false) {
-            $tipo_frete = "SD";
-        } else {
-            $tipo_frete = "EN";
-        }
-        */
 
         // configuração dos campos
         $campo_complemento = $method->campo_complemento;
@@ -250,24 +235,11 @@ class plgVmPaymentPagseguro_virtuemartbrasil extends vmPSPlugin {
             $html .= '<input type="hidden" name="itemShippingCost1" value="0">';
         }
 
-        // desconto do pedido
-        /*
-        $order_discount = (float)$order["details"]["BT"]->order_discount;
-        if (empty($order_discount) && (!empty($order["details"]["BT"]->coupon_discount))) {
-            $order_discount = (float)$order["details"]["BT"]->coupon_discount;
-        }
-
-        $order_discount = (-1)*abs($order_discount);
-        if (!empty($order_discount)) {
-           $html .= '<input type="hidden" name="extraAmount" value="'.number_format($order_discount,2,'.','').'" />'; 
-        }
-        */
-
         // Cupom de Desconto 
         $desconto_pedido = $order["details"]['BT']->coupon_discount;
 
-        //$desconto_pedido*= -1; 
-        $html .= '<input type="hidden" name="extras" value="'.number_format($desconto_pedido, 2, ",", "").'" />'; 
+        // desconto do produto
+        $html .= '<input type="hidden" name="extraAmount" value="'.number_format(round($desconto_pedido, 2),2,".","").'" />'; 
 
         $order_subtotal = $order['details']['BT']->order_subtotal;
         if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');      
@@ -286,8 +258,7 @@ class plgVmPaymentPagseguro_virtuemartbrasil extends vmPSPlugin {
                 <input type="hidden" name="itemDescription' . $i . '" value="' . $p->order_item_name . '">
                 <input type="hidden" name="itemQuantity' . $i . '" value="' . $p->product_quantity . '">
                 <input type="hidden" name="itemAmount' . $i . '" value="' .number_format(round( $p->product_final_price ,2),2,'.','').'">
-                <input type="hidden" name="itemWeight' . $i . '" value="1">';
-            /*  <input type="hidden" name="itemWeight' . $i . '" value="' .round( ShopFunctions::convertWeigthUnit($pr->product_weight, $pr->product_weight_uom, "GR"),2) . '"> */
+                <input type="hidden" name="itemWeight' . $i . '" value="1">';            
         }
 
         $url                  = JURI::root();
