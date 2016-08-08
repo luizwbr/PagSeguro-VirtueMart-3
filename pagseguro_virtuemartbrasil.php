@@ -188,8 +188,14 @@ class plgVmPaymentPagseguro_virtuemartbrasil extends vmPSPlugin {
         // configuração dos campos
         $campo_complemento = $method->campo_complemento;
         $campo_numero   = $method->campo_numero;
+        
+        //checar modo sandbox
+        $url = "https://pagseguro.uol.com.br";
+		if ($method->sandbox == 1){
+			$url = "https://sandbox.pagseguro.uol.com.br";
+		}
 
-        $html .= '<form id="frm_pagseguro" action="https://pagseguro.uol.com.br/v2/checkout/payment.html" method="post" >    ';
+        $html .= '<form id="frm_pagseguro" action="'. $url .'/v2/checkout/payment.html" method="post" >    ';
         $html .= '  <input type="hidden" name="receiverEmail" value="' . $method->email_cobranca . '"  />
                     <input type="hidden" name="currency" value="BRL"  />
                     <input type="hidden" name="tipo" value="CP"  />
