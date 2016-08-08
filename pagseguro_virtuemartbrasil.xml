@@ -61,6 +61,14 @@
             	<field type="vmtitle" default="PagSeguro VirtueMart Brasil" description=""/>
 
                 <field type="vmjpluginwarning" />
+                
+                <!-- SandBox -->
+                <field name="sandbox" type="radio" default="1" label="Modo de Uso" description="Esta opção vem em modo SandBox para voce configurar e testar a sua loja com a API do PagSeguro.&lt;br/&gt; &lt;em&gt;
+		Depois de testar suas configurações altere esta opção para o Modo Produção!">
+		        <option value="0">Modo Produção</option>
+		        <option value="1">Modo SandBox</option>
+		</field>
+		
                 <field name="payment_logos" type="vmfiles" directory="/images/stories/virtuemart/payment"
                        hide_none="1" label="VMPAYMENT_STANDARD_LOGOS"
                        size="40"
