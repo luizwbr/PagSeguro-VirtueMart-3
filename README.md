@@ -6,7 +6,6 @@ Tutorial
 -------
 
 * Para instalar no Virtuemart, basta compactar os arquivos e usar o instalador do Joomla 3.x
-* Requisito: VirtueMart 3.x
 
 - Passo 1 - Habilite o plugin aqui Administrar Plugins
 
