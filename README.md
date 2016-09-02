@@ -1,5 +1,6 @@
-Pagseguro-VirtuemartBrasil3
-Pagseguro pra Virtuemart 3.x / Joomla 3.x
+# Pagseguro-VirtuemartBrasil3
+Método de pagamento não-oficial, que integra o VirtueMart com o PagSeguro, usando formulário html.
+* Virtuemart 3.x / Joomla 3.x
 
 Tutorial
 -------
@@ -60,7 +61,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 Dúvidas?
 ----------
 
-Em caso de dúvidas acesse o site http://virtuemartbrasil.com.br.
+Em caso de dúvidas acesse o site http://virtuemartpro.com.br.
 
 Contato
 ----------
