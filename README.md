@@ -1,4 +1,6 @@
-# Pagseguro-VirtuemartBrasil3
+# Pagseguro-VirtuemartBrasil3 [depreciado]
+Está sendo feita migração para este aqui: https://github.com/luizwbr/virtuemart
+------------------------
 Método de pagamento não-oficial, que integra o VirtueMart com o PagSeguro, usando formulário html.
 * Virtuemart 3.x / Joomla 3.x
 
