@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension version="2.5" type="plugin" group="vmpayment" method="upgrade">    
     <name>Pagseguro VirtueMart Brasil</name>
-    <creationDate>Novembro 2015</creationDate>
+    <creationDate>Dezembro 2017</creationDate>
     <author>Fábio Paiva/Luiz F. Weber</author>
     <authorUrl>http://weber.eti.br - http://virtuemartbrasil.com.br</authorUrl>
     <copyright>Copyright (C) 2015. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-    <version>2.9</version>
+    <version>3.0.0</version>
     <description>
 	Plugin de pagamento Pagseguro
 	&lt;div style=&quot;background:#E5F5FF;border:1px solid #99D6FF;padding:10px;margin:10px; -box-shadow: inset 0px 0px 10px #fff, 0px 0px 5px #ccc; -webkit-box-shadow: inset 0px 0px 10px #fff, 0px 0px 5px #ccc; -moz-box-shadow: inset 0px 0px 10px #fff, 0px 0px 5px #ccc;&quot;&gt;
