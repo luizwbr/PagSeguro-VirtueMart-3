@@ -241,11 +241,13 @@ class plgVmPaymentPagseguro_virtuemartbrasil extends vmPSPlugin {
             $html .= '<input type="hidden" name="itemShippingCost1" value="0">';
         }
 
-        // Cupom de Desconto 
-        $desconto_pedido = $order["details"]['BT']->coupon_discount;
-
-        // desconto do produto
-        $html .= '<input type="hidden" name="extraAmount" value="'.number_format(round($desconto_pedido, 2),2,".","").'" />'; 
+        // Cupom de Desconto
+        if (!empty($order["details"]["BT"]->coupon_discount)) {
+            $desconto_pedido = $order["details"]['BT']->coupon_discount;
+            $html .= '<input type="hidden" name="extraAmount" value="'.number_format(round($desconto_pedido, 2),2,".","").'" />';
+        } else {
+            $html .= '<input type="hidden" name="extraAmount" value="" />';
+        }
 
         $order_subtotal = $order['details']['BT']->order_subtotal;
         if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');      
