@@ -50,7 +50,7 @@ site.com.br//index.php?option=com_virtuemart&view=pluginresponse&task=pluginnoti
 Licença
 -------
 
-Copyright 2015 Weber TI.
+Copyright 2017 Luiz Felipe Weber.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
@@ -62,13 +62,18 @@ Unless required by applicable law or agreed to in writing, software distributed 
 Dúvidas?
 ----------
 
-Em caso de dúvidas acesse o site http://virtuemartpro.com.br.
+Em caso de dúvidas acesse o site http://weber.eti.br.
 
 Contato
 ----------
 
 Luiz Felipe Weber
 weber@weber.eti.br
+
+Novidades
+-------------
+
+3.0.0 - Corrigido o problema dos cupons de desconto ( Obrigado Henrique Galdolfi )
 
 Contribuições
 -------------
